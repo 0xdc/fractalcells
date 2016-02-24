@@ -27,16 +27,9 @@
   tags:
   - comb-misc
   - pkg-server
-- name: Update pkg to latest version
-  pkgng: name=pkg state=present
-  ignore_errors: true
-  tags:
-  - comb-misc
-  - pkg-server
 - name: Install some packages
   pkgng: name={{ item.name }} state=present
   with_items:
-  - { name: zsh }
   - { name: zsh }
   - { name: tmux }
   - { name: python27 }
