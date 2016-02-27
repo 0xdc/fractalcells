@@ -1,0 +1,36 @@
+# We are the client
+client
+
+# On Windows we'll need
+# to use the tap driver
+# but we're not on Windows.
+dev tun
+
+# UDP is faster
+proto tcp
+# sic
+
+# Remoteserver
+remote {{ production_jails.openvpn.hostname }}.{{ external_domain }} 1194
+
+# Try indefinitly to resolve
+# the servername
+resolv-retry infinite
+
+# Persist over restarts
+persist-key
+
+# Do not bind at a specific port
+nobind
+
+# SSL certificates
+ca {{ certificate_authority.short_name }}_ca.cert.pem
+tls-auth ta.key 0
+
+# Compress
+comp-lzo
+
+# Verbosity
+verb 3
+
+auth-user-pass
