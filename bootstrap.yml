@@ -19,7 +19,7 @@
     raw: /usr/sbin/pkg install -y python27 python sudo
   
   - name: Deploy rudimentary sudoers file.
-    script: "/bin/echo %wheel ALL=\\(ALL\\) NOPASSWD: ALL > /usr/local/etc/sudoers.d/fractalcells"
+    shell: "/bin/echo %wheel ALL=\\(ALL\\) NOPASSWD: ALL > /usr/local/etc/sudoers.d/fractalcells"
 
 - hosts: all
   become: yes
