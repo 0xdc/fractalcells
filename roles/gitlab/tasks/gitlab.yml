@@ -124,7 +124,8 @@
   - { cmd: "cd /usr/local/www/gitlab && rake assets:precompile RAILS_ENV=production" }
   - { cmd: "chown git:git /usr/local/www/gitlab/log/application.log" }
   - { cmd: "chown git:git /usr/local/www/gitlab/log/production.log" }
-  - { cmd: "touch /usr/local/share/gitlab-shell/gitlab-shell.log && chown git:git /usr/local/share/gitlab-shell/gitlab-shell.log" }
+  - { cmd: "touch /usr/local/share/gitlab-shell/gitlab-shell.log" }
+  - { cmd: "chown git:git /usr/local/share/gitlab-shell/gitlab-shell.log" }
   - { cmd: "touch /usr/local/www/gitlab/.db.setup" }
   - { cmd: "pw groupmod redis -m git" }
   when:
