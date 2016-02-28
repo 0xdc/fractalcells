@@ -68,3 +68,7 @@
   - name: Clear ports directory
     file: path=/usr/ports state=absent
     ignore_errors: yes
+
+  - name: load swap
+    shell: swapon /dev/xbd4s1
+    ignore_errors: yes
