@@ -61,3 +61,6 @@
   - name: Install remaining 10.2 userland
     shell: freebsd-update install --not-running-from-cron
     when: "'10.1' in freebsdversion.stdout"
+
+  - name: upgrade pkg(8) version
+    shell: pkg upgrade -fy pkg
