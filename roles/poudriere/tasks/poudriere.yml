@@ -61,6 +61,6 @@
   tags:
   - pkg-server
 - name: Build packages for Redmine, Zabbix and Gitlab
-  shell:  poudriere bulk -j build -p ports www/redmine www/nginx net-mgmt/zabbix24-server net-mgmt/zabbix24-agent net-mgmt/zabbix24-frontend devel/git www/gitlab
+  shell:  poudriere bulk -j build -p ports www/redmine www/nginx net-mgmt/zabbix24-server net-mgmt/zabbix24-agent net-mgmt/zabbix24-frontend devel/git www/gitlab net/py-matrix-synapse
   tags:
   - pkg-server
