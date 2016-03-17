@@ -1,6 +1,6 @@
     server {
         listen       80;
-        server_name pkg.fractalcells.com;
+        server_name pkg.{{ external_domain }};
 
         set $basepath "/usr/local/www";
         root  "${basepath}/nginx";
