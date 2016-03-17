@@ -62,6 +62,7 @@
   - jenkins
   - openvpn
   - gitlab
+  - matrix
 
 - assert:
     that:

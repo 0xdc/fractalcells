@@ -21,24 +21,17 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
-- hosts: fractalcells
-  become: true
-  become_method: sudo
-  #strategy: free
-  #accelerate: true
-  roles:
-    - comb
-    - certs
-    - cell
-    - logging
-    - postgresql
-    - opensmtpd
-    - openldap
-    - nginx_proxy
-    - nginx_internal
-    - redmine
-    - zabbix
-    - jenkins
-    - openvpn
-    - gitlab
-    - matrix
+- name: Make sure Matrix jail is started
+  iocage: state=started tag='{{ production_jails.matrix.tag }}'
+  tags:
+  - matrix
+  - code
+  register: matrix_jail
+
+- name: Install Matrix
+  when:
+  - "'uuid' in matrix_jail and (matrix_jail['uuid'] is defined and matrix_jail['uuid'] != '-')"
+  iocage: state=pkg tag={{ production_jails.matrix.tag }} cmd="install -y {{ production_jails.matrix.pkgs | join(' ') }}"
+  tags:
+  - matrix
+  - code

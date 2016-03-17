@@ -21,24 +21,51 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---
-- hosts: fractalcells
-  become: true
-  become_method: sudo
-  #strategy: free
-  #accelerate: true
-  roles:
-    - comb
-    - certs
-    - cell
-    - logging
-    - postgresql
-    - opensmtpd
-    - openldap
-    - nginx_proxy
-    - nginx_internal
-    - redmine
-    - zabbix
-    - jenkins
-    - openvpn
-    - gitlab
-    - matrix
+- name: Check if matrix jail already exists
+  iocage: state=exists tag='{{ production_jails.matrix.tag }}'
+  register: matrix_jail
+  tags:
+  - iocage-matrix
+  - iocage-jails
+  - matrix
+  - code
+
+- name: Create matrix jail {{ production_jails.matrix.tag }}
+  iocage: state=cloned clone_from='{{ template_jail.uuid }}' tag={{ production_jails.matrix.tag }} properties="ip4_addr='{{ production_jails.matrix.interface }}|{{ production_jails.matrix.ip }}' boot=on allow_sysvipc=1 defaultrouter='{{ internal_ip }}' resolver='nameserver {{ internal_ip }}'"
+  when:
+  - "'uuid' in matrix_jail and (matrix_jail['uuid'] is not defined or matrix_jail['uuid'] == '-')"
+  tags:
+  - iocage-matrix
+  - iocage-jails
+  - matrix
+  - code
+
+- name: Find UUID for {{ production_jails.matrix.tag  }}
+  iocage: state=exists tag='{{ production_jails.matrix.tag }}'
+  changed_when: false
+  register: matrix_jail
+  tags:
+  - iocage-matrix
+  - iocage-jails
+  - matrix
+  - code
+
+- name: Register jail's root diretory
+  stat: path='/iocage/jails/{{ matrix_jail.uuid }}/root/'
+  register: matrix_jail_dir
+  tags:
+  - iocage-matrix
+  - iocage-jails
+  - matrix
+  - code
+
+- assert:
+    that:
+      - matrix_jail_dir is defined
+      - matrix_jail_dir.stat.exists
+      - matrix_jail_dir.stat.isdir
+  tags:
+  - iocage-matrix
+  - iocage-jails
+  - matrix
+  - code
