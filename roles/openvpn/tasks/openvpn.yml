@@ -186,3 +186,11 @@
   tags:
   - openvpn
   - vpn
+
+- copy: src={{ item }} dest=/iocage/tags/nginx_proxy/root/usr/local/www/nginx-dist/ remote_src=True
+  with_items:
+  - /usr/local/share/certs/ca/intermediate/certs/{{ certificate_authority.short_name }}_ca.cert.pem
+  - /iocage/tags/vpn/root/usr/local/etc/openvpn/private/ta.key
+  tags:
+  - openvpn
+  - vpn
