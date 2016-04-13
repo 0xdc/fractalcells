@@ -16,7 +16,11 @@
     when: pkg|failed
 
   - name: Install python and sudo so that ansible can run in non-raw mode
-    raw: /usr/sbin/pkg install -y python27 python sudo
+    raw: /usr/sbin/pkg install -y '{{ item }}'
+    with_items:
+    - python27
+    - python
+    - sudo
   
   - name: Deploy rudimentary sudoers file.
     shell: "/bin/echo %wheel ALL=\\(ALL\\) NOPASSWD: ALL > /usr/local/etc/sudoers.d/fractalcells"
