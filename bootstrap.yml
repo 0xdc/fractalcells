@@ -41,26 +41,26 @@
       mode: 0440
       validate: 'visudo -cf %s'
 
-  - name: Check if FreeBSD needs an update to 10.2
+  - name: Check if FreeBSD needs an update to 10.3
     shell: freebsd-version -ku
     register: freebsdversion
-  - name: Upgrade FreeBSD to 10.2
-    shell: freebsd-update -r 10.2-RELEASE upgrade --not-running-from-cron
+  - name: Upgrade FreeBSD to 10.3
+    shell: freebsd-update -r 10.3-RELEASE upgrade --not-running-from-cron
     environment:
       PAGER: cat
-    when: "'10.1' in freebsdversion.stdout"
+    when: "'10.1' in freebsdversion.stdout or '10.2' in freebsdversion.stdout"
   - name: Install FreeBSD 10.2 upgrade
     shell: freebsd-update install --not-running-from-cron
-    when: "'10.1' in freebsdversion.stdout"
+    when: "'10.1' in freebsdversion.stdout or '10.2' in freebsdversion.stdout"
   - name: Reboot server to apply 10.2 kernel
     shell: shutdown -r +1 "rebooting to 10.2"
-    when: "'10.1' in freebsdversion.stdout"
+    when: "'10.1' in freebsdversion.stdout or '10.2' in freebsdversion.stdout"
   - name: Wait 5 minutes for server to reboot
     pause: minutes=5
-    when: "'10.1' in freebsdversion.stdout"
+    when: "'10.1' in freebsdversion.stdout or '10.2' in freebsdversion.stdout"
   - name: Install remaining 10.2 userland
     shell: freebsd-update install --not-running-from-cron
-    when: "'10.1' in freebsdversion.stdout"
+    when: "'10.1' in freebsdversion.stdout or '10.2' in freebsdversion.stdout"
 
   - name: upgrade pkg(8) version
     shell: pkg upgrade -fy pkg
